@@ -24,12 +24,27 @@ jobs:
       - name: Run tests
         run: python -m pytest -v
 
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
     needs: test
+    if: github.event_name == 'push'
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Build Docker image
-        run: docker build -t task-tracker:${{ github.sha }} .
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        run: |
+          IMAGE=ghcr.io/mqondisimathuthu/task-tracker
+          docker build -t $IMAGE:latest -t $IMAGE:${{ github.sha }} .
+          docker push $IMAGE:latest
+          docker push $IMAGE:${{ github.sha }}
