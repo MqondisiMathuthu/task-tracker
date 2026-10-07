@@ -36,5 +36,6 @@ spec:
   selector:
     app: web
   ports:
-    - port: 5000
+    - name: http
+      port: 5000
       nodePort: 30080
