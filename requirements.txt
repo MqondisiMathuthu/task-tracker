@@ -8,3 +8,4 @@ Werkzeug==3.1.9
 redis
 pytest
 prometheus-flask-exporter
+gunicorn
