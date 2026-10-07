@@ -12,7 +12,7 @@ r = redis.Redis(
 
 @app.route("/")
 def home():
-    return jsonify({"message": "Task Tracker is alive!"})
+    return jsonify({"message": "Task Tracker is alive! v2"})
 
 @app.route("/health")
 def health():
